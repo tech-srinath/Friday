@@ -1,5 +1,6 @@
 import abc
 import json
+from pprint import pprint
 
 
 class API:
@@ -21,9 +22,9 @@ class API:
 
     @abc.abstractmethod
     def parse(self, debugging=False):
-        if debugging:
-            print("Response before loading:", self.response)
+        # if debugging:
+        #     print("Response before loading:", self.response)
         self.parsed_response = json.loads(self.response.decode('UTF-8'))
         if debugging:
-            print("Response after loading:", self.parsed_response)
+            print("Response after loading:", str(self.parsed_response).replace("}", "}\n"))
         return self.parsed_response

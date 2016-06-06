@@ -9,16 +9,32 @@ from gtts import gTTS
 import os
 import re
 from platform import system
+import random
 from subprocess import call
 from pprint import pprint
 
 
+# """Example of Python client calling Knowledge Graph Search API."""
+# import requests
+#
+# api_key = open('/home/zen/.api_key').read()
+# query = 'Taylor Swift'
+# service_url = 'https://kgsearch.googleapis.com/v1/entities:search'
+# params = {
+#     'query': query,
+#     'limit': 10,
+#     'indent': True,
+#     'key': api_key,
+# }
+# response = requests.get(service_url, params=params).json()
+
+
 class Friday:
-    def __init__(self, speech_system='google', lang='en-au',
+    def __init__(self, input_system='google', output_system='both', lang='en-au',
                  speech_file_location='.', speech_file_name='audio_response',
                  speak=True, debugging=False):
         # The specific function that should be executed.
-        self.action = None
+        self.action_category = None
         # Whether a verbose debug log should be printed
         self.debugging = debugging
         # What the assistant hears and what it decides to say back/do
@@ -31,38 +47,69 @@ class Friday:
         self.is_active = True
         # The language of the voice that the assistant uses
         self.lang = lang
-        # What tts engine the voice uses
-        self.speech_system = speech_system
+        # What tts engine the voice uses or whether to use text input
+        self.input_system = input_system
+        # How should answers be returned to the user
+        self.output_system = output_system
         # Where generated speech files should be saved
         self.speech_file_location = speech_file_location
         # What generated speech files should be called
         self.speech_file_name = speech_file_name
+        # What type of question is being asked.
+        self.request_type = None
         # Determines if the system plays sound files that are generated
         self.speak = speak
+        # Whether to pretty-print the text output
+        self.pretty_print = True
         # The response to a query and an action that could be applied to it.
         self.answer = [None, None]
         # The response to a query given by an API
         self.api_reply = [None, None]
         # If a service raises an error, it'll be stored here
         self.error = None
+        # Returned by a service when it does not understand an input. Ensures quality answers.
+        self.confused_responses = [
+            "Could you reword that last statement?",
+            "I beg your pardon, I don't understand.",
+            "I'm not sure I follow.",
+            "I'm a bit confused.",
+            "Sorry, that didn't make sense to me.",
+            "I'm not quite sure I understand.",
+            "Can you rephrase that, please?",
+            "I\x92'm afraid I don't know much about that yet.",
+            "I'm afraid I don't know much about that yet.",
+            "Sorry, come again?",
+            "Hold on, what was that?",
+            "Can you try repeating that, please?",
+            "My apologies, I didn't grasp that last part.",
+            "Sorry, can you please start over?",
+            "I don't quite get what you're asking.",
+            "I'd love to help, but I don't understand.",
+            "You haven't taught me about that yet.",
+            "I'm afraid that's not in my skill set just yet.",
+            "I'm sorry, I'm not too familiar with that yet.",
+
+        ]
+        # FUCK THE DEVELOPERS OF THIS THING, CAN'T THEY AT LEAST GIVE A DAMN GOOD CLASSIFICATION?!
         # Gives a general idea of what the API has stored in it at any given moment
         self._debug = {
             "Reply": self.api_reply,
             "Question": self.question,
+            "Response Type": self.request_type,
             "Error": self.error,
-            "Intent": self.action
+            "Intent": self.action_category
         }
     
     def input(self, input_type='google', debugging=False):
         try:
-            self.perception = actions.listen(input_type,debugging)
+            self.perception = actions.listen(input_type, debugging)
         except KeyboardInterrupt:
             if settings.debugging:
                 print("Received keyboard interrupt signal. Shutting down.")
-            self.action = ["Shut down", manage.app_close]
+            self.action_category = ["Shut down", manage.app_close]
             self.is_active = False
         else:
-            self.action, self.question, self.api_reply[0] = self.perception
+            self.action_category, self.question, self.api_reply[0], self.request_type = self.perception
     
     def debug(self):
         return self._debug
@@ -82,13 +129,22 @@ class Friday:
 
         :return: No return value.
         """
-        action = actions.get_reaction(self.action)
+        action = actions.get_reaction(self.action_category)
         if self.debugging:
-            print("Function:", action, "\nAPI Action:", self.action)
+            print("API Action Category:", self.action_category)
+            print("Function corresponding to category:", action)
+            print("API Reply:", self.api_reply)
+            print("Response Type:", self.request_type)
+
+        # Send all wisdom or general-knowledge based question to Wolfram Alpha.
+        if "wisdom" in self.action_category:
+            action = actions.wolfram_query
+
+        # Follows answer format of [text, action]
         if action is not None:
             self.answer = [action(self.question), action]
         else:
-            self.answer = [self.api_reply, None]
+            self.answer = ["", None]
 
     def choose_response(self):
         """
@@ -102,13 +158,38 @@ class Friday:
         choices = [self.api_reply, self.answer]  # Determines order of importance
         if self.debugging:
             print(choices)
+        # index = 0
         for response in choices:
-            if response[0]:
+            # if index == 0 and (self.request_type != 'whois' or self.request_type != 'whatis'):
+            #     index += 1
+            #     continue
+
+            if response[0] and response[0] not in self.confused_responses:
                 if self.debugging:
                     print(response)
                 self.response = response[0]
                 return
-        self.response = "I don't know."
+            # index += 1
+        # If the intel service returned an intelligent, confused response. Use that; it's more dynamic.
+        if self.debugging:
+            print("No intelligent reply found, resorting to confusion.")
+        if choices[0][0]:
+            self.response = choices[0][0]
+        else: # Otherwise use a boxed response.
+            self.response = random.choice([
+                "I don't understand.",
+                "That went right over my head, could you rephrase?",
+                "Hold on, what was that?"
+            ])
+
+    def respond(self):
+        if self.output_system == "audio":
+            self.speak_response()
+        elif self.output_system == "text":
+            self.print_response(self.pretty_print)
+        else:
+            self.print_response(self.pretty_print)
+            self.speak_response()
 
     def print_response(self, pretty_print=True):
         try:
@@ -141,7 +222,7 @@ class Friday:
             os.makedirs(folder_path)
 
         path = home
-        if self.speech_system == 'google':
+        if self.input_system == 'google':
             # Create the MP3 file which will speak the text
             title += '.mp3'
             path += title
@@ -179,7 +260,7 @@ class Friday:
     def received_kill_signal(self):
         if self.answer[1] == manage.app_close:  # Shut down
             self.response = self.answer[0]
-            self.speak_response()
+            self.respond()
             self.is_active = False
             return True
         return False

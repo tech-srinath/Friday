@@ -71,6 +71,8 @@ def local_speech_recognition():
 
 
 def listen(input_type='google', debugging=False):
+    # Default value.
+    request_type = None
     # This heavily assumes the response formats, make our own
     # which every service converts their response into?
     if debugging:
@@ -84,22 +86,37 @@ def listen(input_type='google', debugging=False):
     __init__.ai.get_response(question)
     # Clean up the response and turn it into a Python object that can be read
     response = __init__.ai.parse(debugging)  # Need to work on the interface
-    result = response['result']  # Assumes we're using gTTS
-    # Get the text that is supposed to be spoken aloud
-    reply = result['fulfillment']['speech']
-    # Get what the service thought you said
-    question = result['resolvedQuery']
-    if input_type == 'google':
-        print("You said: " + question)
+
+    if 'result' in response:
+        result = response['result']  # Assumes we're using gTTS
+        # Get the text that is supposed to be spoken aloud
+        reply = result['fulfillment']['speech']
+        # Get what the service thought you said
+        question = result['resolvedQuery']
+        if input_type == 'google':
+            print("You said: " + question)
+        if 'parameters' in response['result']:
+            if 'request_type' in response['result']['parameters']:
+                request_type = response['result']['parameters']['request_type']
+            else:
+                request_type = None
+    else:
+        result = {}
+        reply = None
+        question = None
+
     # Get the classification for the input, this includes
     # whether it is a request about some information or
     # a specific action that the user wants the bot to
     # perform, etc.
-    action = result['action']
-    return action, question, reply
+    if 'action' in result:
+        action = result['action']
+    else:
+        action = 'wisdom.unknown'
+    return action, question, reply, request_type
 
 
-def wolfram_query(question):
+def wolfram_query_OLD(question):
     import wolframalpha
     # Every service should have a general set of requirements under which
     # it is activated, this would be one of the ones that Wolfram Alpha
@@ -130,10 +147,41 @@ def wolfram_query(question):
     return [answer, None]  # Follows answer format of [text, action]
 
 
+def wolfram_query(question):
+    import wolframalpha
+    # Every service should have a general set of requirements under which
+    # it is activated, this would be one of the ones that Wolfram Alpha
+    # uses, it does have others as well. Consider having a single method
+    # in the plugin system that returns a boolean determining whether
+    # a plugin should be activated.
+    if question.lower().startswith('wolfram'):
+        question = question[8:]
+    client = wolframalpha.Client(user_info.WOLFRAM_KEY)
+    res = client.query(question)
+    if len(res):
+        if len(res.results):
+            answer = res.results[0].text[0]
+        else:
+            answer = ' '.join([each_answer.subpods[0].text for each_answer in res.pods if each_answer.subpods[0].text])
+    else:
+        # answer = "Sorry, Wolfram doesn't know the answer."
+        answer = ""
+
+    # Replace some of its notation so it's more easily read.
+    answer = answer.replace('\n', '; ').replace('~~', ' or about ')
+    # Get the result to a computation and don't bother reading the original question.
+    if '=' in answer:
+        answer = answer[answer.index('=')+1:]
+    return answer
+
 reactions = {
     "manage.app_close": manage.app_close,  # General command for closing the app was given.
     "input.unknown": wolfram_query,  # If the AI system doesn't know what's being asked
     "wisdom.unknown": wolfram_query,  # If the AI system doesn't know the answer to what's being asked
+    "wisdom.physics": wolfram_query,  # Wolfram for physics, yay
+    "wisdom.languages": wolfram_query,
+    "wisdom.institutions": wolfram_query,
+    "wisdom.words": wolfram_query,
     "calculator.math": wolfram_query,  # Use Wolfram for math
 }
 
