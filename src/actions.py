@@ -10,6 +10,8 @@ except SystemError:
     import __init__
 
 
+# Move all these out into plugins
+
 def google_tts(debugging=False):
     """
     Uses Google's Text to Speech engine to
@@ -21,7 +23,7 @@ def google_tts(debugging=False):
     print("Please speak now")
     # Listen to the microphone set up in the __init__ file.
     with __init__.m as source:
-            audio = __init__.r.input(source)
+            audio = __init__.r.listen(source)
     print("Processing audio")
     try:
         # Try to recognize the text
@@ -32,9 +34,10 @@ def google_tts(debugging=False):
         return "Could not request results from Google's speech recognition service."
 
 
-# No longer being used. Too dependent on one platform. Too many dependencies
+# No longer being used. Too many dependencies
 # Could possibly be rewritten, so it isn't being thrown out yet.
 # Also a misnomer since it uses the API.AI speech recognition service.
+# Could be written to use Sphinx. That might be best since that's fast.
 def local_speech_recognition():
     import apiai
     from .__init__ import ai
@@ -73,20 +76,23 @@ def local_speech_recognition():
 def listen(input_type='google', debugging=False):
     # Default value.
     request_type = None
-    # This heavily assumes the response formats, make our own
-    # which every service converts their response into?
-    if debugging:
-        print(input_type)
     if input_type == 'google':
         question = google_tts(debugging)
     else:
         question = input("Input your query: ")
     print("Wait for response...")
     # Get a response from the AI using the api interface.
+    # This should NOT be in __init__
     __init__.ai.get_response(question)
     # Clean up the response and turn it into a Python object that can be read
     response = __init__.ai.parse(debugging)  # Need to work on the interface
 
+    # This heavily assumes the response formats, make our own
+    # which every service converts their response into?
+    # Should I just read the JSON directly and pass around
+    # the response object? It'd require me to standardize
+    # things a bit, but it would work and that'd probably
+    # be better for the long term.
     if 'result' in response:
         result = response['result']  # Assumes we're using gTTS
         # Get the text that is supposed to be spoken aloud
@@ -116,83 +122,7 @@ def listen(input_type='google', debugging=False):
     return action, question, reply, request_type
 
 
-def wolfram_query_OLD(question):
-    import wolframalpha
-    # Every service should have a general set of requirements under which
-    # it is activated, this would be one of the ones that Wolfram Alpha
-    # uses, it does have others as well. Consider having a single method
-    # in the plugin system that returns a boolean determining whether
-    # a plugin should be activated.
-    if question.lower().startswith('wolfram'):
-        question = question[8:]
-    client = wolframalpha.Client(user_info.WOLFRAM_KEY)
-    res = client.query(question)
-    try:
-        return next(res.results).text  # This really needs to be changed.
-        # I shouldn't have to rely upon error catching for my flow control.
-    except StopIteration:
-        pass
-    try:
-        answer = '   '.join([each_answer.text for each_answer in res.pods if each_answer])
-    except TypeError:
-        answer = None
-    if not answer:
-        answer = "Sorry, Wolfram doesn't know the answer."
-
-    # Replace some of its notation so it's more easily read.
-    answer = answer.replace('\n', '; ').replace('~~', ' or about ')
-    # Get the result to a computation and don't bother reading the original question.
-    if '=' in answer:
-        answer = answer[answer.index('=')+1:]
-    return [answer, None]  # Follows answer format of [text, action]
+# Rework this so it isn't returning function calls.
 
 
-def wolfram_query(question):
-    import wolframalpha
-    # Every service should have a general set of requirements under which
-    # it is activated, this would be one of the ones that Wolfram Alpha
-    # uses, it does have others as well. Consider having a single method
-    # in the plugin system that returns a boolean determining whether
-    # a plugin should be activated.
-    if question.lower().startswith('wolfram'):
-        question = question[8:]
-    client = wolframalpha.Client(user_info.WOLFRAM_KEY)
-    res = client.query(question)
-    if len(res):
-        if len(res.results):
-            answer = res.results[0].text[0]
-        else:
-            answer = ' '.join([each_answer.subpods[0].text for each_answer in res.pods if each_answer.subpods[0].text])
-    else:
-        # answer = "Sorry, Wolfram doesn't know the answer."
-        answer = ""
-
-    # Replace some of its notation so it's more easily read.
-    answer = answer.replace('\n', '; ').replace('~~', ' or about ')
-    # Get the result to a computation and don't bother reading the original question.
-    if '=' in answer:
-        answer = answer[answer.index('=')+1:]
-    return answer
-
-reactions = {
-    "manage.app_close": manage.app_close,  # General command for closing the app was given.
-    "input.unknown": wolfram_query,  # If the AI system doesn't know what's being asked
-    "wisdom.unknown": wolfram_query,  # If the AI system doesn't know the answer to what's being asked
-    "wisdom.physics": wolfram_query,  # Wolfram for physics, yay
-    "wisdom.languages": wolfram_query,
-    "wisdom.institutions": wolfram_query,
-    "wisdom.words": wolfram_query,
-    "calculator.math": wolfram_query,  # Use Wolfram for math
-}
-
-
-def get_reaction(action):
-    """
-    Handles getting an action to be executed
-    depending on the input.
-    :param action: A general classification for a query
-    :return: A function to be executed as a result of
-    the query or None if a reaction does not exist.
-    """
-    return reactions.get(action, None)
 

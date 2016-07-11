@@ -10,11 +10,11 @@ show_decibels = False
 # Not implemented
 show_confidence = False
 # Enable verbose debugging messages
-debugging = False
+debugging = True
 # Show complete response from google tts
 verbose_tts_response = False
 # Determine what service is used to convert text to speech, can be 'google' or 'local'
-speech_system = 'local'
+speech_system = 'google'
 # Determines where the program should store files.
 home = os.path.expanduser("~")
 

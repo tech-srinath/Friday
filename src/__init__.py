@@ -12,6 +12,8 @@ import speech_recognition as sr
 
 __author__ = "Isaac Smith (Zenohm)"
 
+# This is disorganized, see about cleaning it up.
+
 settings.installed['apiai'] = manage.import_or_install('apiai', 'apiai',
                                                        'the api.ai intelligent unit',
                                                        'have advanced conversation capabilities')

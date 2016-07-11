@@ -4,6 +4,8 @@ from subprocess import call
 from textwrap import fill
 
 
+# This seems redundant.
+
 # Any tuple return value in any of these modules is the shutdown signal which
 # will cause the assistant to speak the output first value and stop running.
 

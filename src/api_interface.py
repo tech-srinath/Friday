@@ -26,5 +26,6 @@ class API:
         #     print("Response before loading:", self.response)
         self.parsed_response = json.loads(self.response.decode('UTF-8'))
         if debugging:
-            print("Response after loading:", str(self.parsed_response).replace("}", "}\n"))
+            print("Response after loading:")
+            print(json.dumps(self.parsed_response, indent=2, sort_keys=True))
         return self.parsed_response
