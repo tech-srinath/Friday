@@ -1,6 +1,6 @@
 import os
 
-requirements_file = os.path.join(os.path.dirname(__file__), 'Friday', 'REQUIREMENTS.txt')
+requirements_file = os.path.join(os.path.dirname(__file__), 'REQUIREMENTS.txt')
 with open(requirements_file) as f:
     required = f.read().splitlines()
 
@@ -43,6 +43,6 @@ setup(
 	'Topic :: Scientific/Engineering :: Human Machine Interfaces',
 	'Topic :: Multimedia :: Sound/Audio :: Speech',
     ],
-    packages = ['friday'],
+    packages = ['Friday'],
     install_requires=required,
 )
