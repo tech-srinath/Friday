@@ -1,4 +1,4 @@
-import . as friday
+import friday
 from friday import plugins
 from friday import assistants
 # from friday import settings

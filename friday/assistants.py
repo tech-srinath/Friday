@@ -1,5 +1,4 @@
-# Friday.py
-import ai_interface
+from friday import ai_interface
 import apiai
 import os
 import random
