@@ -43,6 +43,6 @@ setup(
 	'Topic :: Scientific/Engineering :: Human Machine Interfaces',
 	'Topic :: Multimedia :: Sound/Audio :: Speech',
     ],
-    packages = ['Friday'],
+    packages = ['friday'],
     install_requires=required,
 )
