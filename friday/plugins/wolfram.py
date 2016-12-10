@@ -9,7 +9,8 @@ keys_file.close()
 
 class Wolfram(IPlugin):
     def can_perform(self, request):
-        return 'result' in request and 'resolvedQuery' in request['result']
+        return 'result' in request and 'resolvedQuery' in request['result']\
+                and 'action' in request['result'] and request['result']['action'] == 'wisdom.unknown'
         # result = request['result']  # Assumes we're using gTTS
         # # Get the text that is supposed to be spoken aloud
         # reply = result['fulfillment']['speech']

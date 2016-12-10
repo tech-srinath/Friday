@@ -242,7 +242,7 @@ class Friday:
         # Trigger 'some request' from the loaded plugins
         for name, plugin in self.plugins.items():
             if plugin.can_perform(request):
-                print(plugin.perform(request))
+                pprint(plugin.perform(request))
 
     def refuse(self):
         print("Can't do that")

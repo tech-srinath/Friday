@@ -1,0 +1,7 @@
+apiai>=1.2.1
+gTTS>=1.1.6
+PyAudio>=0.2.9
+PyYAML>=3.12
+SpeechRecognition>=3.4.6
+wolframalpha>=3.0
+Yapsy>=1.11.223
