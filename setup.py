@@ -1,8 +1,6 @@
 import os
 
 requirements_file = os.path.join(os.path.dirname(__file__), 'Friday', 'REQUIREMENTS.txt')
-with open(version_file) as f:
-    __version_info__ = eval(f.read().strip())
 with open(requirements_file) as f:
     required = f.read().splitlines()
 
