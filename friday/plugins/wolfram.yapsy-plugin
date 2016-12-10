@@ -1,0 +1,8 @@
+[Core]
+Name = Wolfram|Alpha
+Module = wolfram
+
+[Documentation]
+Author = Isaac Smith
+Version = 0.1
+Description = Sends requests to Wolfram|Alpha

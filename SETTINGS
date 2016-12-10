@@ -1,0 +1,25 @@
+# Program settings
+input system: 'text'  # Input_type can be 'google', or 'text'
+output system: 'text'  # Can be 'audio', 'text', or 'both'
+show_decibels: False  # Only works with local speech to text
+show_confidence: False  # Not implemented
+debugging: True  # Enable verbose debugging messages
+verbose_tts_response: False  # Show complete response from google stt
+speech_system: 'google'  # Determine what service is used to convert text to speech, can be 'google' or 'local'
+speak: False
+spoken language: en-us
+home: .  # Determines where the program should store files.
+plugin folder: [friday/plugins]
+speech file name: response
+speech file location: .
+
+# Microphone settings
+DEVICE: 2
+CHUNK: 2048
+CHANNELS: 1
+RATE: 48000
+RECORD_SECONDS: 5
+
+# Used to allow users to access services
+CLIENT_ACCESS_TOKEN: '8386a96431bb49ef9d480732fb6a0e21'
+SUBSCRIPTION_KEY: '3c972944-87a5-476e-8307-3349f34842e0'

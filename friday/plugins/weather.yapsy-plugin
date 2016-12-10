@@ -1,0 +1,8 @@
+[Core]
+Name = Weather
+Module = weather
+
+[Documentation]
+Author = Isaac Smith
+Version = 0.1
+Description = Checks the weather

@@ -1,0 +1,9 @@
+[Core]
+Name = Calendar
+Module = calendar
+
+[Documentation]
+Author = Isaac Smith
+Version = 0.1
+Website = http://github.com/Zenohm
+Description = Checks and schedules the calendar
