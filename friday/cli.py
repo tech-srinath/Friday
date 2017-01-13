@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import friday
+from friday import friday
 import click
 
 
