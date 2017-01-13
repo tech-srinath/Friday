@@ -13,7 +13,8 @@ from pprint import pprint
 from subprocess import call
 from yapsy.PluginManager import PluginManager
 
-settings_file = open("SETTINGS")
+file_path = os.path.relpath("SETTINGS")
+settings_file = open(file_path)
 settings = yaml.load(settings_file)
 settings_file.close()
 
