@@ -29,7 +29,7 @@ env:
 - TOXENV=py26
 
 before_install:
-  - sudo apt-get install -y python-pyaudio python3-pyaudio
+  - sudo apt-get install -y python-pyaudio
 
 install: pip install -U tox
 language: python
