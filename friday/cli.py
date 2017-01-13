@@ -1,9 +1,13 @@
-# main.py
-import assistants
+# -*- coding: utf-8 -*-
+
+import friday
+import click
 
 
-def main():
-    assistant = assistants.Friday()
+@click.command()
+def main(args=None):
+    """Console script for friday"""
+    assistant = friday.Friday()
     while assistant.is_active:
         request = assistant.listen()
 
@@ -23,5 +27,6 @@ def main():
         else:
             assistant.apologize()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
