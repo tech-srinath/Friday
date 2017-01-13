@@ -14,7 +14,7 @@ from subprocess import call
 from yapsy.PluginManager import PluginManager
 
 directory_path = os.path.dirname(__file__)
-file_path = os.path.join(script_dir, "SETTINGS")
+file_path = os.path.join(directory_path, "SETTINGS")
 settings_file = open(file_path)
 settings = yaml.load(settings_file)
 settings_file.close()
