@@ -3,18 +3,18 @@ Friday
 ===============================
 
 
-.. image:: https://img.shields.io/pypi/v/friday.svg
-        :target: https://pypi.python.org/pypi/friday
+.. image:: https://img.shields.io/pypi/v/Friday.svg
+        :target: https://pypi.python.org/pypi/Friday
 
-.. image:: https://img.shields.io/travis/Zenohm/friday.svg
-        :target: https://travis-ci.org/Zenohm/friday
+.. image:: https://img.shields.io/travis/Zenohm/Friday.svg
+        :target: https://travis-ci.org/Zenohm/Friday
 
-.. image:: https://readthedocs.org/projects/friday/badge/?version=latest
-        :target: https://friday.readthedocs.io/en/latest/?badge=latest
+.. image:: https://readthedocs.org/projects/Friday/badge/?version=latest
+        :target: https://Friday.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
-.. image:: https://pyup.io/repos/github/Zenohm/friday/shield.svg
-     :target: https://pyup.io/repos/github/Zenohm/friday/
+.. image:: https://pyup.io/repos/github/Zenohm/Friday/shield.svg
+     :target: https://pyup.io/repos/github/Zenohm/Friday/
      :alt: Updates
 
 
