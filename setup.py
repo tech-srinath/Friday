@@ -1,48 +1,65 @@
-import os
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
-requirements_file = os.path.join(os.path.dirname(__file__), 'REQUIREMENTS.txt')
-with open(requirements_file) as f:
-    required = f.read().splitlines()
+from setuptools import setup
 
-from distutils.core import setup
+with open('README.rst') as readme_file:
+    readme = readme_file.read()
+
+with open('HISTORY.rst') as history_file:
+    history = history_file.read()
+
+requirements = [
+    'Click>=6.0',
+    'apiai>=1.2.1',
+    'gTTS>=1.1.6',
+    'PyAudio>=0.2.9',
+    'PyYAML>=3.12',
+    'SpeechRecognition>=3.4.6',
+    'Yapsy>=1.11.223',
+]
+
+test_requirements = [
+    # TODO: put package test requirements here
+]
 
 setup(
-    name = "Friday",
-    description = "An open source, extensible virtual assistant",
-    version = "0.3.1",
-    url = "https://github.com/Zenohm/Friday",
-    long_description = """An open-source virtual assistant who got her name from an old project of one Tony Stark.""",
-    license = "MIT",
-    keywords = ['assistant', 'ai', 'api.ai',
-                'plugin', 'plugins', 'friday',
-                'virtual assistant', 'open source'],
-    maintainer = "Isaac Smith (Zenohm)",
-    maintainer_email = "sentherus@gmail.com",
-    author = "Isaac Smith (Zenohm)",
-    author_email = "sentherus@gmail.com",
-    classifiers = [
-	'Development Status :: 3 - Alpha',
-	'Environment :: Console',
-	'Natural Language :: English',
-	'Intended Audience :: Other Audience',
-	'Intended Audience :: Education',
-	'Intended Audience :: Developers',
-	'Intended Audience :: Science/Research',
-	'License :: OSI Approved :: MIT License',
-	'Operating System :: Microsoft :: Windows',
-	'Operating System :: POSIX :: Linux',
-	'Programming Language :: Python :: 3 :: Only',
-	'Programming Language :: Python :: 3.3',
-	'Programming Language :: Python :: 3.4',
-	'Programming Language :: Python :: 3.5',
-	'Programming Language :: Python :: 3.6',
-	'Topic :: Office/Business',
-	'Topic :: Home Automation',
-	'Topic :: Internet',
-	'Topic :: Scientific/Engineering',
-	'Topic :: Scientific/Engineering :: Human Machine Interfaces',
-	'Topic :: Multimedia :: Sound/Audio :: Speech',
+    name='friday',
+    version='0.3.3',
+    description="An open source virtual assistant.",
+    long_description=readme + '\n\n' + history,
+    author="Isaac Luke Smith",
+    author_email='sentherus@gmail.com',
+    url='https://github.com/Zenohm/friday',
+    packages=[
+        'friday',
     ],
-    packages = ['friday'],
-    install_requires=required,
+    package_dir={'friday':
+                 'friday'},
+    entry_points={
+        'console_scripts': [
+            'friday=friday.cli:main'
+        ]
+    },
+    include_package_data=True,
+    install_requires=requirements,
+    license="MIT license",
+    zip_safe=False,
+    keywords='friday',
+    classifiers=[
+        'Development Status :: 2 - Pre-Alpha',
+    	'Environment :: Console',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: MIT License',
+        'Natural Language :: English',
+        "Programming Language :: Python :: 2",
+        'Programming Language :: Python :: 2.6',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+    ],
+    test_suite='tests',
+    tests_require=test_requirements
 )
