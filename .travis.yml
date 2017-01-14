@@ -22,11 +22,11 @@ deploy:
     repo: Zenohm/friday
     tags: true
 env:
+- TOXENV=py36
 - TOXENV=py35
 - TOXENV=py34
 - TOXENV=py33
 - TOXENV=py27
-- TOXENV=py26
 
 before_install:
   - sudo apt-get install -y python-pyaudio libasound-dev portaudio19-dev libportaudio2 libportaudiocpp0
