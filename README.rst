@@ -9,13 +9,17 @@ Friday
 .. image:: https://img.shields.io/travis/Zenohm/Friday.svg
         :target: https://travis-ci.org/Zenohm/Friday
 
-.. image:: https://readthedocs.org/projects/Friday/badge/?version=latest
-        :target: https://Friday.readthedocs.io/en/latest/?badge=latest
+.. image:: https://readthedocs.org/projects/friday/badge/?version=latest
+        :target: https://friday.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
-.. image:: https://pyup.io/repos/github/Zenohm/Friday/shield.svg
-     :target: https://pyup.io/repos/github/Zenohm/Friday/
+.. image:: https://pyup.io/repos/github/zenohm/friday/shield.svg
+     :target: https://pyup.io/repos/github/zenohm/friday/
      :alt: Updates
+
+.. image:: https://landscape.io/github/Zenohm/Friday/master/landscape.svg?style=flat
+   :target: https://landscape.io/github/Zenohm/Friday/master
+   :alt: Code Health
 
 
 An open source virtual assistant.
