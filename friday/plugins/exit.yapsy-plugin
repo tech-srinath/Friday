@@ -1,0 +1,9 @@
+[Core]
+Name = Exit
+Module = exit
+
+[Documentation]
+Author = Isaac Smith
+Version = 0.1
+Website = http://github.com/Zenohm
+Description = Exits the program

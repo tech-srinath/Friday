@@ -17,6 +17,7 @@ requirements = [
     'PyYAML>=3.12',
     'SpeechRecognition>=3.4.6',
     'Yapsy>=1.11.223',
+    'wolframalpha>=3.0.0',
 ]
 
 test_requirements = [

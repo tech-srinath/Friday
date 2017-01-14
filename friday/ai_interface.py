@@ -10,7 +10,7 @@ class API:
         self.query = None
         self.response = None
         self.parsed_response = None
-    
+
     @abc.abstractmethod
     def get_response(self, text):
         request = self.system.text_request()
@@ -24,7 +24,7 @@ class API:
         # if debugging:
         #     print("Response before loading:", self.response)
         self.parsed_response = json.loads(self.response.decode('UTF-8'))
-        if debugging:
-            print("Response after loading:")
-            print(json.dumps(self.parsed_response, indent=2, sort_keys=True))
+        # if debugging:
+            # print("Response after loading:")
+            # print(json.dumps(self.parsed_response, indent=2, sort_keys=True))
         return self.parsed_response

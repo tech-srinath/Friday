@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
 
 from friday import ai_interface
+from gtts import gTTS
+from platform import system
+from subprocess import call
+from yapsy.PluginManager import PluginManager
+
 import apiai
+import click
 import os
 import random
 import re
 import speech_recognition as sr
 import yaml
-from gtts import gTTS
-from platform import system
-from pprint import pprint
-from subprocess import call
-from yapsy.PluginManager import PluginManager
 
 directory_path = os.path.dirname(__file__)
 file_path = os.path.join(directory_path, "SETTINGS")
@@ -67,8 +68,6 @@ class Friday:
         self.is_active = True
         # What type of question is being asked.
         self.request_type = None
-        # Whether to pretty-print the text output
-        self.pretty_print = True
         # The response to a query and an action that could be applied to it.
         self.answer = [None, None]
         # The response to a query given by an API
@@ -118,7 +117,7 @@ class Friday:
             if settings['input_system'] == 'google':
                 with self.microphone as source:
                     if settings['debugging']:
-                        print("Adjusting to ambient noise.")
+                        click.echo("Adjusting to ambient noise.")
                         # we only need to calibrate once, before we start listening
                     self.recognizer.adjust_for_ambient_noise(source)
                     # recognizer.energy_threshold = 200
@@ -153,7 +152,6 @@ class Friday:
             frames, data = resampler.resample(in_data, frame_count)
             if settings.show_decibels:
                 decibel = 20 * log(audioop.rms(data, 2) + 1, 10)
-                print(decibel)
             state = vad.processFrame(frames)
             request.send(data)
             state_signal = pyaudio.paContinue if state == 1 else pyaudio.paComplete
@@ -163,7 +161,7 @@ class Friday:
         stream = p.open(format=pyaudio.paInt32, input=True, output=False, stream_callback=callback,
                         channels=settings['CHANNELS'], rate=settings['RATE'], frames_per_buffer=settings['CHUNK'])
         stream.start_stream()
-        print("Speak!")
+        click.echo("Speak!")
         while stream.is_active():
             time.sleep(0.1)
         stream.stop_stream()
@@ -177,11 +175,11 @@ class Friday:
         text.
         :return: String, either the spoken text or error text.
         """
-        print("Please speak now")
+        click.echo("Please speak now")
         # Listen to the microphone set up in the __init__ file.
         with self.microphone as mic_source:
             audio = self.recognizer.listen(mic_source)
-        print("Processing audio")
+        click.echo("Processing audio")
         try:
             # Try to recognize the text
             return self.recognizer.recognize_google(audio, show_all=self.debugging)
@@ -196,8 +194,9 @@ class Friday:
         if self.input_system == 'google':
             question = self._google_stt()
         else:
-            question = input("Input your query: ")
-        print("Wait for response...")
+            pass
+            question = click.prompt("Input your query: ")
+        click.echo("Wait for response...")
         # Get a response from the AI using the api interface.
         self.ai.get_response(question)
         # Clean up the response and turn it into a Python object that can be read
@@ -216,7 +215,7 @@ class Friday:
         #     # Get what the service thought you said
         #     question = result['resolvedQuery']
         #     if self.input_system == 'google':
-        #         print("You said: " + question)
+        #         click.echo("You said: " + question)
         #     if 'parameters' in response['result']:
         #         if 'request_type' in response['result']['parameters']:
         #             request_type = response['result']['parameters']['request_type']
@@ -245,14 +244,14 @@ class Friday:
         # Trigger 'some request' from the loaded plugins
         for name, plugin in self.plugins.items():
             if plugin.can_perform(request):
-                pprint(plugin.perform(request))
+                click.echo(plugin.perform(request))
 
     def refuse(self):
-        print("Can't do that")
+        click.echo("Can't do that")
         pass
 
     def apologize(self):
-        print("I failed to do that, sorry.")
+        click.echo("I failed to do that, sorry.")
         pass
 
     def get_input_from_user(self):
@@ -260,7 +259,7 @@ class Friday:
             self.perception = self.listen()
         except KeyboardInterrupt:
             if settings.debugging:
-                print("Received keyboard interrupt signal. Shutting down.")
+                click.echo("Received keyboard interrupt signal. Shutting down.")
             self.action_category = ["Shut down", manage.app_close]
             self.is_active = False
         else:
@@ -293,10 +292,10 @@ class Friday:
         """
         action = actions.get_reaction(self.action_category)
         if self.debugging:
-            print("API Action Category:", self.action_category)
-            print("Function corresponding to category:", action)
-            print("API Reply:", self.api_reply)
-            print("Response Type:", self.request_type)
+            click.echo("API Action Category:", self.action_category)
+            click.echo("Function corresponding to category:", action)
+            click.echo("API Reply:", self.api_reply)
+            click.echo("Response Type:", self.request_type)
 
         # Send all wisdom or general-knowledge based question to Wolfram Alpha.
         if "wisdom" in self.action_category:
@@ -319,7 +318,7 @@ class Friday:
         """
         choices = [self.api_reply, self.answer]  # Determines order of importance
         if self.debugging:
-            print(choices)
+            click.echo(choices)
         # index = 0
         for response in choices:
             # if index == 0 and (self.request_type != 'whois' or self.request_type != 'whatis'):
@@ -328,28 +327,20 @@ class Friday:
 
             if response[0] and response[0] not in self.confused_responses:
                 if self.debugging:
-                    print(response)
+                    click.echo(response)
                 self.response = response[0]
                 return
                 # index += 1
         # If the intel service returned an intelligent, confused response. Use that; it's more dynamic.
         if self.debugging:
-            print("No intelligent reply found, resorting to confusion.")
+            click.echo("No intelligent reply found, resorting to confusion.")
         if choices[0][0]:
             self.response = choices[0][0]
         else:  # Otherwise use a boxed response.
             self.response = random.choice(self.confused_responses)
 
-    def _print_response(self, pretty_print=True):
-        try:
-            if pretty_print:
-                pprint(self.response)
-            else:
-                print(self.response)
-            if self.debugging:
-                print("main function output:", self.response)
-        except UnicodeEncodeError:
-            print("Unicode is lovely.")
+    def _print_response(self):
+        click.echo(self.response)
 
     def _speak_response(self):
         self.say(self.response, home=self.speech_file_location,
@@ -359,16 +350,15 @@ class Friday:
         if self.output_system == "audio":
             self._speak_response(self)
         elif self.output_system == "text":
-            self._print_response(self, self.pretty_print)
+            self._print_response(self)
         else:
-            self._print_response(self, self.pretty_print)
+            self._print_response(self)
             self._speak_response(self)
 
-    def say(self, message, speak_aloud=True,
-            title='Speak'):
+    def say(self, message, speak_aloud=True, title='Speak'):
         message = str(message)
         if not message.strip():
-            print("No text to speak.")
+            click.echo("No text to speak.")
             return
         computer_os = system()
         folder, file_name = os.path.split(title)
@@ -413,7 +403,7 @@ class Friday:
                 call(speech_file)
             except FileNotFoundError:
                 if self.debugging:
-                    print("File not accessible:", speech_file)
+                    click.echo("File not accessible:", speech_file)
 
     def received_kill_signal(self):
         if self.answer[1] == manage.app_close:  # Shut down
