@@ -12,7 +12,7 @@ the complexity of individual plugin classes.
 File layout
 ~~~~~~~~~~~
 
-For now, each plugin must follow the default layout for a `yapsy` plugin::
+For now, each plugin must follow the default layout for a `yapsy` plugin:
 
 .. https://media.readthedocs.org/pdf/yapsy/latest/yapsy.pdf
 
@@ -26,6 +26,7 @@ For now, each plugin must follow the default layout for a `yapsy` plugin::
             - A plugin info file which is identified thanks to its extension, see the Plugin Info File Format to see what should be in this file. The extension is customisable at the PluginManager‘s instanciation, since one may usually prefer the extension to bear the application name.
         * myplugin.py
             - The source of the plugin. This file should at least define a class inheriting the IPlugin interface. This class will be instanciated at plugin loading
+
 
 Class layout
 ~~~~~~~~~~~~
