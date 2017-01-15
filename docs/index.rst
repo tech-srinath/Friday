@@ -9,8 +9,11 @@ Contents:
    readme
    installation
    usage
+   plugins
+   future
    contributing
-   authorshistory
+   authors
+   history
 
 Indices and tables
 ==================

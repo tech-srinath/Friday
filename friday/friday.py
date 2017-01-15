@@ -10,7 +10,6 @@ from yapsy.PluginManager import PluginManager
 import apiai
 import click
 import os
-import random
 import re
 import speech_recognition as sr
 import yaml
@@ -22,6 +21,7 @@ file_path = os.path.join(directory_path, "SETTINGS")
 settings_file = open(file_path)
 settings = yaml.load(settings_file)
 settings_file.close()
+
 
 class Friday:
     def __init__(self):
@@ -123,10 +123,20 @@ class Friday:
 
     def listen(self):
         # Default value.
+        # TODO: Input plugin system goes here
+        # Plugins should be used for getting input so users can build their
+        # own custom front-end to the application.
+        # This will allow the speech to text functions to be moved out of the
+        # main class and into their own plugins.
         if self.input_system == 'google':
             self.question = self._google_stt()
         else:
             self.question = click.prompt("Input your query")
+
+        # TODO: Loading plugin system goes here
+        # Eventually I want people to be able to build custom behavior
+        # that executes when the response is being fetched. So there could
+        # be a loading screen that plays music or something for example.
         click.echo("Wait for response...")
         # Get a response from the AI using the api interface.
         self.ai.get_response(self.question)
@@ -135,19 +145,35 @@ class Friday:
         return self.response
 
     def think(self, request):
-        return any(plugin.can_perform(request)
+        # TODO: Move plugins to a priority system
+        # Eventually plugins should return an integer value which determines
+        # their ordering when responding to a request, in the event multiple
+        # plugins are able to respond to the same request.
+        # This may eventually allow for watchdog plugins which check for
+        # erroneous requests and alert the system by returning negative (Maybe)
+        # priorities, which can then be used to safeguard a user's system or
+        # settings.
+        return any(plugin.can_perform(self, request)
                    for name, plugin in self.plugins.items())
 
     def perform(self, request):
         # Trigger 'some request' from the loaded plugins
         for name, plugin in self.plugins.items():
-            if plugin.can_perform(request):
-                click.echo(plugin.perform(request))
+            if plugin.can_perform(self, request):
+                # TODO: Allow plugins to fail
+                # Plugins will be able to return False in the event they fail,
+                # allowing the system to then apologize to the user.
+                plugin.perform(self, request)
+        return True
 
     def refuse(self):
+        # May become unnecessary as the plugins could be built to refuse
+        # requests directly.
         click.echo("Can't do that")
 
     def apologize(self):
+        # May eventually become unnecessary as plugins could be built to
+        # return apologies directly.
         click.echo("I failed to do that, sorry.")
 
     def _print_response(self):
@@ -157,6 +183,9 @@ class Friday:
         self.say(self.response, title=self.speech_file_name, speak_aloud=self.speak)
 
     def respond(self):
+        # TODO: Output plugin system goes here
+        # Plugins should be used for providing output for the same reasons
+        # that plugins should be used for providing input.
         if self.output_system == "audio":
             self._speak_response()
         elif self.output_system == "text":
@@ -166,6 +195,7 @@ class Friday:
             self._speak_response()
 
     def say(self, message, speak_aloud=True, title='Speak'):
+        # May eventually be moved into its own plugin
         message = str(message)
         if not message.strip():
             click.echo("No text to speak.")

@@ -8,7 +8,7 @@ keys_file.close()
 
 
 class Wolfram(IPlugin):
-    def can_perform(self, request):
+    def can_perform(self, friday, request):
         return 'result' in request and 'resolvedQuery' in request['result']\
                 and 'action' in request['result'] and request['result']['action'] == 'wisdom.unknown'
         # result = request['result']  # Assumes we're using gTTS
@@ -18,7 +18,7 @@ class Wolfram(IPlugin):
         # question = result['resolvedQuery']
 
 
-    def perform(self, request):
+    def perform(self, friday, request):
         question = request['result']['resolvedQuery']
         client = wolframalpha.Client(keys['WOLFRAM'])
         res = client.query(question)

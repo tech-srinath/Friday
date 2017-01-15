@@ -22,7 +22,7 @@ Friday
    :alt: Code Health
 
 
-An open source virtual assistant.
+An open source virtual assistant. Uses the https://api.ai/ system for backend analysis of requests.
 
 
 * Free software: MIT license
@@ -32,7 +32,12 @@ An open source virtual assistant.
 Features
 --------
 
-* TODO
+* Easy to use and flexible plugin system.
+* Google's speech to text and text to speech system.
+* Support for Windows, Linux, and OS/X.
+* Python 2 and 3 support.
+* Fully automated tests using the wonderful Travis CI build system.
+* A simple codebase.
 
 Credits
 ---------

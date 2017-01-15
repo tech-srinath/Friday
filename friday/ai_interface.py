@@ -2,6 +2,7 @@ import json
 
 
 class API:
+    # This may eventually be removed
     def __init__(self, system):
         self.system = system
         self.query = None

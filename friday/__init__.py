@@ -7,4 +7,4 @@ __all__ = [ basename(f)[:-3] for f in modules if isfile(f)]
 
 __author__ = """Isaac Luke Smith"""
 __email__ = 'sentherus@gmail.com'
-__version__ = '0.3.3'
+__version__ = '0.3.4'
