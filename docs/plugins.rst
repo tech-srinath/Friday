@@ -12,9 +12,9 @@ the complexity of individual plugin classes.
 File layout
 ~~~~~~~~~~~
 
-For now, each plugin must follow the default layout for a `yapsy` plugin:
+For now, each plugin must follow the default layout for a `yapsy`_ plugin:
 
-.. https://media.readthedocs.org/pdf/yapsy/latest/yapsy.pdf
+.. _yapsy: https://media.readthedocs.org/pdf/yapsy/latest/yapsy.pdf
 
 For a Standard plugin:
     * myplugin.yapsy-plugin
@@ -65,9 +65,9 @@ friday
     allowing plugins to only be executed when the assistant is in a specific state
 
 request
-    `The response from the API.AI service` formatted as a Python dictionary.
+    `The response from the API.AI service`_ formatted as a Python dictionary.
 
-    .. https://docs.api.ai/docs/query#section-message-objects
+    .. _The response from the API.AI service: https://docs.api.ai/docs/query#section-message-objects
 
 Using these inputs, each plugin has access to everything the assistant has access to,
 and full-featured plugins can be built using this system.
