@@ -2,6 +2,10 @@
 Friday
 ===============================
 
+.. image:: https://api.codacy.com/project/badge/Grade/1704089e7167476299e9e5cd40a9bf22
+   :alt: Codacy Badge
+   :target: https://www.codacy.com/app/Zenohm/Friday?utm_source=github.com&utm_medium=referral&utm_content=Zenohm/Friday&utm_campaign=badger
+
 
 .. image:: https://img.shields.io/pypi/v/Friday.svg
         :target: https://pypi.python.org/pypi/Friday
