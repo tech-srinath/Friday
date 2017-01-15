@@ -16,16 +16,16 @@ For now, each plugin must follow the default layout for a `yapsy` plugin:
 
 .. https://media.readthedocs.org/pdf/yapsy/latest/yapsy.pdf
 
-    For a Standard plugin:
-        * myplugin.yapsy-plugin
-            - A plugin info file identical to the one previously described.
-        * myplugin
-            - A directory containing an actual Python plugin (ie with a __init__.py file that makes it importable). The upper namespace of the plugin should present a class inheriting the IPlugin interface (the same remarks apply here as in the previous case).
-    For a Single file plugin:
-        * myplugin.yapsy-plugin
-            - A plugin info file which is identified thanks to its extension, see the Plugin Info File Format to see what should be in this file. The extension is customisable at the PluginManager‘s instanciation, since one may usually prefer the extension to bear the application name.
-        * myplugin.py
-            - The source of the plugin. This file should at least define a class inheriting the IPlugin interface. This class will be instanciated at plugin loading
+For a Standard plugin:
+    * myplugin.yapsy-plugin
+        - A plugin info file identical to the one previously described.
+    * myplugin
+        - A directory containing an actual Python plugin (ie with a __init__.py file that makes it importable). The upper namespace of the plugin should present a class inheriting the IPlugin interface (the same remarks apply here as in the previous case).
+For a Single file plugin:
+    * myplugin.yapsy-plugin
+        - A plugin info file which is identified thanks to its extension, see the Plugin Info File Format to see what should be in this file. The extension is customisable at the PluginManager‘s instanciation, since one may usually prefer the extension to bear the application name.
+    * myplugin.py
+        - The source of the plugin. This file should at least define a class inheriting the IPlugin interface. This class will be instanciated at plugin loading
 
 
 Class layout
