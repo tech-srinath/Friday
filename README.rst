@@ -2,16 +2,15 @@
 Friday
 ===============================
 
-.. image:: https://api.codacy.com/project/badge/Grade/1704089e7167476299e9e5cd40a9bf22
-   :alt: Codacy Badge
-   :target: https://www.codacy.com/app/Zenohm/Friday?utm_source=github.com&utm_medium=referral&utm_content=Zenohm/Friday&utm_campaign=badger
-
-
-.. image:: https://img.shields.io/pypi/v/Friday.svg
-        :target: https://pypi.python.org/pypi/Friday
+.. .. image:: https://img.shields.io/pypi/v/Friday.svg
+..        :target: https://pypi.python.org/pypi/Friday
+.. This project has not yet been uploaded to PyPI when it has this will be updated.
 
 .. image:: https://img.shields.io/travis/Zenohm/Friday.svg
         :target: https://travis-ci.org/Zenohm/Friday
+
+.. image:: https://img.shields.io/badge/GITTER-join%20chat-green.svg
+        :target: https://gitter.im/Friday-Assistant/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link
 
 .. image:: https://readthedocs.org/projects/friday/badge/?version=latest
         :target: https://friday.readthedocs.io/en/latest/?badge=latest
@@ -24,6 +23,10 @@ Friday
 .. image:: https://landscape.io/github/Zenohm/Friday/master/landscape.svg?style=flat
    :target: https://landscape.io/github/Zenohm/Friday/master
    :alt: Code Health
+
+.. image:: https://api.codacy.com/project/badge/Grade/1704089e7167476299e9e5cd40a9bf22
+   :alt: Codacy Badge
+   :target: https://www.codacy.com/app/Zenohm/Friday?utm_source=github.com&utm_medium=referral&utm_content=Zenohm/Friday&utm_campaign=badger
 
 
 An open source virtual assistant. Uses the https://api.ai/ system for backend analysis of requests.
