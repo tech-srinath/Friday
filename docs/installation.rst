@@ -12,7 +12,7 @@ To install Friday, run this command in your terminal:
 
 .. code-block:: console
 
-    $ pip install friday
+    $ pip install https://github.com/Zenohm/Friday/archive/master.zip
 
 This is the preferred method to install Friday, as it will always install the most recent stable release. 
 
