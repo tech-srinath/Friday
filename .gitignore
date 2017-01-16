@@ -44,6 +44,8 @@ nosetests.xml
 coverage.xml
 *,cover
 .hypothesis/
+travis_pypi_setup.py
+
 
 # Translations
 *.mo
@@ -66,3 +68,9 @@ target/
 
 # Log file
 events.log
+
+# Github files
+.github
+
+# Editor settings
+.editorconfig

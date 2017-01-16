@@ -26,7 +26,7 @@ test_requirements = [
 
 setup(
     name='friday',
-    version='0.3.4',
+    version='0.3.5',
     description="An open source virtual assistant.",
     long_description=readme + '\n\n' + history,
     author="Isaac Luke Smith",
@@ -54,10 +54,8 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
         "Programming Language :: Python :: 2",
-        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
     ],
