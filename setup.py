@@ -26,7 +26,7 @@ test_requirements = [
 
 setup(
     name='friday',
-    version='0.3.3',
+    version='0.3.4',
     description="An open source virtual assistant.",
     long_description=readme + '\n\n' + history,
     author="Isaac Luke Smith",
