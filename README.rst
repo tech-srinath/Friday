@@ -1,7 +1,6 @@
 ===============================
 Friday
 ===============================
-https://img.shields.io/badge/GITTER-join%20chat-green.svg
 
 .. .. image:: https://img.shields.io/pypi/v/Friday.svg
 ..        :target: https://pypi.python.org/pypi/Friday
