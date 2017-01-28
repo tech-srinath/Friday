@@ -243,5 +243,5 @@ class Friday:
                 call(speech_file)
             except FileNotFoundError:
                 if self.debugging:
-                    click.echo("File not accessible:", speech_file)
+                    click.echo("File not accessible:" + str(speech_file))
 
