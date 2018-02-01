@@ -29,8 +29,8 @@ setup(
     version='0.3.5',
     description="An open source virtual assistant.",
     long_description=readme + '\n\n' + history,
-    author="Isaac Luke Smith",
-    author_email='sentherus@gmail.com',
+    author="I. Smith",
+    author_email='senzenpen@gmail.com',
     url='https://github.com/Zenohm/friday',
     packages=[
         'friday',
