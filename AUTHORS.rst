@@ -5,7 +5,7 @@ Credits
 Development Lead
 ----------------
 
-* Isaac Luke Smith <sentherus@gmail.com>
+* I. Smith <senzenpen@gmail.com>
 
 Contributors
 ------------
